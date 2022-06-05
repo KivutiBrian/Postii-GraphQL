@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bash -c "uvicorn main:app --reload --workers 1 --host 0.0.0.0"
+    container_name: graphql_api
+    restart: always
+    volumes:
+      - ./:/app
+    env_file:
+      - ./.env
+    ports:
+      - 8000:8000
+  
+  postgres:
+    image: postgres
+    container_name: pgdb
+    restart: always
+    env_file:
+      - ./.postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+
+volumes:
+  pgdata:
+
+
